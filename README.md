@@ -1,4 +1,4 @@
-# childs-game2
+# wordsGame
 
 ## Project setup
 ```
