@@ -1,16 +1,13 @@
-<template>
-  <div>
-    <button v-if="!isGameEnd" @click="resetWord(word)" class="btn">Сброс</button>
-    <div v-if="isGameEnd && isGameWin">
-      <div>Вы выиграли, хотите повторить?</div>
-      <button @click="nextGame">Конечно</button>
-      <button>Я уже устал!</button>
-    </div>
-    <div v-if="isGameEnd && !isGameWin">
-      <div>Вы проиграли!</div>
-      <button @click="newGame">Начать заново</button>
-    </div>
-  </div>
+<template lang='pug'>
+  div
+    button(v-if="!isGameEnd" @click="resetWord(word)" class="btn") Сброс
+    div(v-if="isGameEnd && isGameWin")
+      div Вы выиграли, хотите повторить?
+      button(@click="nextGame") Конечно
+      button Я уже устал!
+    div(v-if="isGameEnd && !isGameWin")
+      div Вы проиграли!
+      button(@click="newGame") Начать заново
 </template>
 
 <script>

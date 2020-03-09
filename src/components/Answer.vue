@@ -1,9 +1,7 @@
-<template>
-  <div class="flex-container" v-if="!isGameEnd">
-    <div v-for="(value, index) in wordLength" :key="index">
-      <div class='container'>{{ value }}</div>
-    </div>
-  </div>
+<template lang='pug'>
+  div(class="flex-container" v-if="!isGameEnd")
+    div(v-for="(value, index) in wordLength" :key="index")
+      div(class='container') {{ value }}
 </template>
 
 <script>

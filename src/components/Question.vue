@@ -1,12 +1,9 @@
-<template>
-  <div>
-    <img :src='imgLink' >
-    <div class=flex-container v-if="!isGameEnd">
-      <div v-for="(w, index) in splittedWord" :key="index">
-        <div @click="moveChar({w, index})" class='container'>{{ w }}</div>
-      </div>
-    </div>
-  </div>
+<template lang='pug'>
+  div
+    img(:src="imgLink")
+    div(class="flex-container" v-if="!isGameEnd")
+      div(v-for="(w, index) in splittedWord" :key="index")
+        div(@click="moveChar({w, index})" class="container") {{ w }}
 </template>
 
 <script>
