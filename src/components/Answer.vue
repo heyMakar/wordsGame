@@ -1,13 +1,13 @@
 <template lang='pug'>
   div(class="flex-container" v-if="!isGameEnd")
-    div(v-for="(value, index) in wordLength" :key="index")
+    div(v-for="(value, index) in answerWord" :key="index")
       div(class='container') {{ value }}
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  computed: mapGetters(['wordLength', 'isGameEnd']),
+  computed: mapGetters(['answerWord', 'isGameEnd']),
   created() {
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'REMOVE_CHAR') {

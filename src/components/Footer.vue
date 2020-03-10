@@ -4,7 +4,7 @@
     div(v-if="isGameEnd && isGameWin")
       div Вы выиграли, хотите повторить?
       button(@click="nextGame") Конечно
-      button Я уже устал!
+      button(@click="quitGame") Я уже устал!
     div(v-if="isGameEnd && !isGameWin")
       div Вы проиграли!
       button(@click="newGame") Начать заново
@@ -15,7 +15,7 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   computed: 
     mapGetters(['isGameEnd', 'isGameWin', 'word']),
-  methods: mapActions(['nextGame', 'newGame', 'resetWord'])
+  methods: mapActions(['nextGame', 'newGame', 'resetWord', 'quitGame'])
 }
 </script>
 

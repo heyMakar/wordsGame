@@ -1,16 +1,20 @@
 <template>
   <div id="app">
-    <QuestionBox/>
+    <QuestionBox v-if="!isGameQuit"/>
+    <ResultTable v-if="isGameQuit"/>
   </div>
 </template>
 
 <script>
 import QuestionBox from './components/QuestionBox'
-
+import ResultTable from './components/ResultTable'
+import { mapGetters } from 'vuex';
 export default {
   name: 'App',
+  computed: mapGetters(['isGameQuit']),
   components: {
     QuestionBox,
+    ResultTable
   }
 }
 </script>

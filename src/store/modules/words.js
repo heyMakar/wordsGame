@@ -7,11 +7,14 @@ let numbers = randomRange();
 export default {
   state: {
     word: null,
+    requestedWords: [],
+    id: 1,
     splittedWord: null,
     imgLink: null,
-    wordLength: null,
+    answerWord: null,
     isGameEnd: false,
     isGameWin: false,
+    isGameQuit: false,
   },
   actions: {
     async getWord({ commit, dispatch }) {
@@ -21,10 +24,12 @@ export default {
       numbers = numbers.filter(n => n !== first);
       const word = await res.data;
       if(word['result_message'] === 'Полный успех') {
+        const processedWordName = trim(word.data.name)
         commit('ADD_WORD', word);
         commit('ADD_SPLITTED_WORD', word.data.name);
+        commit('ADD_REQUESTED_WORD', processedWordName)
         commit("ADD_IMG_LINK", word.data['img_src']);
-        commit('ADD_WORD_LENGTH', trim(word.data.name).length)
+        commit('ADD_WORD_LENGTH', processedWordName.length)
       } else dispatch('getWord');
     },
     moveChar({ commit }, char) {
@@ -36,12 +41,16 @@ export default {
     },
     newGame({ dispatch, commit }) {
       numbers = randomRange();
+      commit('RESET_REQUESTED_WORDS');
       commit('CHANGE_GAME_STATE');
       dispatch('getWord');
     },
     resetWord(state, word) {
       state.commit('RESET_WORD');
       state.commit('ADD_SPLITTED_WORD', word.data.name)
+    },
+    quitGame({ commit }) {
+      commit('QUIT_GAME');
     }
   },
   mutations: {
@@ -58,12 +67,19 @@ export default {
         return c;
       });
     },
+    ADD_REQUESTED_WORD(state, word) {
+      state.requestedWords.push({ word, id: state.id});
+      state.id += 1;
+    },
+    RESET_REQUESTED_WORDS(state) {
+      state.requestedWords = [];
+    },
     ADD_IMG_LINK(state, link) {
       state.imgLink = link;
     },
     ADD_WORD_LENGTH(state, length) {
       const emptyArray = new Array(length).fill('')
-      state.wordLength = emptyArray;
+      state.answerWord = emptyArray;
     },
     REMOVE_CHAR(state, data) {
       const newWord = state.splittedWord.map((c, i) => {
@@ -73,11 +89,11 @@ export default {
         return c;
       });
       state.splittedWord = newWord;
-      const findIndex = state.wordLength.indexOf('')      
-      state.wordLength[findIndex] = data.w
+      const findIndex = state.answerWord.indexOf('')      
+      state.answerWord[findIndex] = data.w
       if (state.splittedWord.every(w => w === '')) {
         state.isGameEnd = true;
-        const userAnswer = state.wordLength
+        const userAnswer = state.answerWord
         const processedUserAnswer = userAnswer.map(c => {
           if (c === 'sp') {
             c = ' '
@@ -95,7 +111,10 @@ export default {
       state.isGameWin = false;
     },
     RESET_WORD(state) {
-      state.wordLength.fill('');
+      state.answerWord.fill('');
+    },
+    QUIT_GAME(state) {
+      state.isGameQuit = true;
     }
   },
   getters: {
@@ -108,14 +127,20 @@ export default {
     imgLink(state) {
       return state.imgLink
     },
-    wordLength(state) {
-      return state.wordLength;
+    answerWord(state) {
+      return state.answerWord;
     },
     isGameEnd(state) {
       return state.isGameEnd;
     },
     isGameWin(state) {
       return state.isGameWin;
+    },
+    isGameQuit(state) {
+      return state.isGameQuit;
+    },
+    getRequestedWords(state) {
+      return state.requestedWords;
     }
   },
 }
